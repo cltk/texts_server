@@ -1,12 +1,20 @@
 class TextNode < ApplicationRecord
   MULTIPLIER = 2**24
 
+  before_validation :ensure_key!
+
   validates :key, presence: true, uniqueness: true
+
+  def ensure_key!
+    return unless key.nil?
+
+    update(key: TextNode.gen_key)
+  end
 
   private
 
-  def gen_key
-    self.key = loop do
+  def self.gen_key
+    loop do
       random_key = rand(MULTIPLIER).to_s(32)
       break random_key unless TextNode.exists?(key: random_key)
     end
