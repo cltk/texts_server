@@ -14,7 +14,6 @@ class CreateWorks < ActiveRecord::Migration[5.1]
       t.timestamps
     end
 
-
     add_reference :works, :author, foreign_key: true
     add_reference :works, :corpus, foreign_key: true
     add_reference :works, :language, foreign_key: true

@@ -1,7 +1,6 @@
 class CreateAuthors < ActiveRecord::Migration[5.1]
   def change
     create_table :authors do |t|
-      # references language, see language migration
       t.string :name, null: false
       t.string :slug, null: false
 

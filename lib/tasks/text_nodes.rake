@@ -9,8 +9,6 @@ namespace :text_nodes do
 
       return format_text_nodes(v, nodes, _location) if v.is_a?(Hash)
 
-      puts "location: #{_location.to_s}"
-
       nodes << {
         location: _location,
         text: v,
@@ -95,12 +93,14 @@ namespace :text_nodes do
       language_id: language.id,
       slug: slugify(meta[:english_title])
     ) do |w|
+      puts w
       w.edition = meta[:edition]
       w.english_title = meta[:english_title]
       w.filename = meta[:filename]
       w.form = meta[:form]
       w.md5_hash = meta[:md5_hash]
       w.original_title = meta[:original_title]
+      w.strcuture = meta[:structure]
       w.urn = meta[:urn]
       w.save!
     end
@@ -115,7 +115,6 @@ namespace :text_nodes do
     end
 
     text_nodes.each_with_index do |node, i|
-      puts "node: #{node}"
       TextNode.find_or_create_by!(
         author_id: author.id,
         corpus_id: corpus.id,
