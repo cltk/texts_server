@@ -19,6 +19,10 @@ namespace :text_nodes do
   end
 
   def import_cltk_json(filename, repo)
+    md5_hash = Digest::MD5.file(filename).hexdigest
+
+    return "No changes necessary for #{filename}" if Work.where(md5_hash: md5_hash).any?
+
     data = begin
       JSON.load(File.new(filename), nil, create_additions: false, symbolize_names: true)
     rescue => exception
@@ -35,15 +39,20 @@ namespace :text_nodes do
     return "------ broken file #{filename} ------" unless work
 
     original_title = data[:originalTitle] ||
-      data[:original_title] ||
-      work
+                     data[:original_title] ||
+                     work
 
     edition = data[:edition] || ""
     author = data[:author]
     structure = data[:meta].downcase || ""
-    corpus = data[:source] || repo
-      .replace("texts", "").replace("text", "")
-      .replace(".git", "").replace("_", " ").strip.titleize
+    corpus = data[:source] ||
+             repo
+               .replace("texts", "")
+               .replace("text", "")
+               .replace(".git", "")
+               .replace("_", " ")
+               .strip
+               .titleize
     corpus_link = data[:sourceLink] || make_corpus_link(corpus)
     language = data[:language].downcase
     language = "greek" if language == "grc"
@@ -63,7 +72,7 @@ namespace :text_nodes do
       english_title: work,
       filename: filename,
       form: form,
-      md5_hash: Digest::MD5.hexdigest(filename),
+      md5_hash: md5_hash,
       language: language,
       original_title: original_title,
       structure: structure,
