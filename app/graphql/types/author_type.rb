@@ -11,8 +11,6 @@ Types::AuthorType = GraphQL::ObjectType.define do
 
     description "Find a work by this author with the given (integer) ID"
     resolve -> (obj, args, ctx) do
-      puts args[:id]
-      puts obj.id
       Work.find_by(author_id: obj.id, id: args[:id].to_i)
     end
   end
