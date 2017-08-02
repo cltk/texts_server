@@ -27,10 +27,23 @@ Types::WorkType = GraphQL::ObjectType.define do
 
     resolve -> (obj, args, ctx) do
       obj.text_nodes.where(
-        "location[array_length(location, 1)] <= ?
-         and location[array_length(location, 1)] >= ?",
-        args[:location][args[:location].length - 1] + args[:trailing_nodes],
-        args[:location][args[:location].length - 1] - args[:leading_nodes] 
+        "(index >= (
+               select index - :leading_nodes from text_nodes
+               where work_id = :work_id and location = ARRAY[:location]
+        ) and index < (
+              select index from text_nodes
+              where work_id = :work_id and location = ARRAY[:location]
+        )) or (index <= (
+               select index + :trailing_nodes from text_nodes
+               where work_id = :work_id and location = ARRAY[:location]
+        ) and index >= (
+              select index from text_nodes
+              where work_id = :work_id and location = ARRAY[:location]
+        ))",
+        leading_nodes: args[:leading_nodes],
+        location: args[:location],
+        trailing_nodes: args[:trailing_nodes],
+        work_id: obj.id
       ).order(index: :asc)
     end
   end
