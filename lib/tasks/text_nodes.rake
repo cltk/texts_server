@@ -7,7 +7,7 @@ namespace :text_nodes do
     text.each_with_index do |(k, v), i|
       _location = location + [k.to_s.to_i]
 
-      return format_text_nodes(v, nodes, _location) if v.is_a?(Hash)
+      next format_text_nodes(v, nodes, _location) if v.is_a?(Hash)
 
       nodes << {
         location: _location,
