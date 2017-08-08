@@ -1,27 +1,3 @@
-# Texts Server
-
-## Ingesting new texts
-
-The `rake text_nodes:ingest` task expects a single argument: a remote git
-endpoint to pull from. The expectation right now is that the repositories
-contents conform to CLTK JSON, but that might change in the future. You can call
-the task with a command like
-
-```sh
-rake text_nodes:ingest\[https://github.com/cltk/greek_text_perseus.git\]
-```
-
-You can, of course, replace `https://github.com/cltk/greek_text_perseus.git`
-with the repository of your choice.
-
-## Querying a text
-
-When you fire up the server (`rails s`), a GraphiQL endpoint will be available
-at `/graphql`. You can use this endpoint to try out queries and examine the
-texts that are available on the server.
-
-## License
-
 The MIT License (MIT)
 
 Copyright (c) 2017 CLTK
