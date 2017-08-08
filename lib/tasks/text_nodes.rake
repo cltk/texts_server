@@ -109,7 +109,7 @@ namespace :text_nodes do
       w.form = meta[:form]
       w.md5_hash = meta[:md5_hash]
       w.original_title = meta[:original_title]
-      w.strcuture = meta[:structure]
+      w.structure = meta[:structure]
       w.urn = meta[:urn]
       w.save!
     end
