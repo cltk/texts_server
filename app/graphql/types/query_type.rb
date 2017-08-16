@@ -34,6 +34,13 @@ Types::QueryType = GraphQL::ObjectType.define do
     resolve -> (obj, args, ctx) { Author.find_by(slug: args[:slug]) }
   end
 
+  field :authors_count do
+    type types.Int
+
+    description "Count authors"
+    resolve -> (obj, args, ctx) { Author.count }
+  end
+
   field :corpora do
     type types[Types::CorpusType]
 
@@ -111,5 +118,22 @@ Types::QueryType = GraphQL::ObjectType.define do
     argument :slug, !types.String
     description "Find a work by its slug"
     resolve -> (obj, args, ctx) { Work.find_by(slug: args[:slug]) }
+  end
+
+  field :works_count do
+    type types.Int
+
+    description "Count works"
+    resolve -> (obj, args, ctx) { Work.count }
+  end
+
+  field :works do
+    type types[Types::WorkType]
+
+    argument :limit, types.Int, default_value: 20
+    argument :offset, types.Int, default_value: 0
+
+    description "List all works"
+    resolve -> (obj, args, ctx) { Work.limit(args[:limit]).offset(args[:offset]) }
   end
 end
