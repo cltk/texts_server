@@ -11,6 +11,13 @@ Types::QueryType = GraphQL::ObjectType.define do
     resolve -> (obj, args, ctx) { Author.limit(args[:limit]).offset(args[:offset]) }
   end
 
+  field :authors_count do
+    type types.Int
+
+    description "Count authors"
+    resolve -> (obj, args, ctx) { Author.count() }
+  end
+
   field :author_by_id do
     type Types::AuthorType
 
@@ -81,6 +88,13 @@ Types::QueryType = GraphQL::ObjectType.define do
 
     description "List all works"
     resolve -> (obj, args, ctx) { Work.limit(args[:limit]).offset(args[:offset]) }
+  end
+
+  field :works_count do
+    type types.Int
+
+    description "Count works"
+    resolve -> (obj, args, ctx) { Work.count() }
   end
 
   field :work_by_id do
