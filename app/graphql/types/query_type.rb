@@ -6,11 +6,11 @@ Types::QueryType = GraphQL::ObjectType.define do
 
     argument :limit, types.Int, default_value: 20
     argument :offset, types.Int, default_value: 0
-    
+
     description "List all authors"
     resolve -> (obj, args, ctx) { Author.limit(args[:limit]).offset(args[:offset]) }
   end
-  
+
   field :author_by_id do
     type Types::AuthorType
 
@@ -71,6 +71,13 @@ Types::QueryType = GraphQL::ObjectType.define do
     argument :slug, !types.String
     description "Find a language by its slug"
     resolve -> (obj, args, ctx) { Language.find_by(slug: args[:slug]) }
+  end
+
+  field :works do
+    type types[Types::WorkType]
+
+    description "List all works"
+    resolve -> (obj, args, ctx) { Work.limit(10) }
   end
 
   field :work_by_id do
