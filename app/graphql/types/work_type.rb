@@ -2,6 +2,8 @@ Types::WorkType = GraphQL::ObjectType.define do
   name "Work"
 
   field :id, !types.ID
+  field :author, !Types::AuthorType
+  field :corpus, !Types::CorpusType
   field :english_title, types.String
   field :form, types.String
   field :original_title, !types.String
