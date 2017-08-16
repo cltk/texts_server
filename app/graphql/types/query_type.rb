@@ -76,8 +76,11 @@ Types::QueryType = GraphQL::ObjectType.define do
   field :works do
     type types[Types::WorkType]
 
+    argument :limit, types.Int, default_value: 20
+    argument :offset, types.Int, default_value: 0
+
     description "List all works"
-    resolve -> (obj, args, ctx) { Work.limit(10) }
+    resolve -> (obj, args, ctx) { Work.limit(args[:limit]).offset(args[:offset]) }
   end
 
   field :work_by_id do
