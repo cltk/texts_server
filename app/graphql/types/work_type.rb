@@ -51,4 +51,80 @@ Types::WorkType = GraphQL::ObjectType.define do
       end
     end
   end
+  field :text_location_next, types[types.Int] do
+    description "Find the next text node ahead of the supplied location at a given offset"
+    argument :location, types[types.Int]
+    argument :offset,
+             types.Int,
+             "Number of nodes to offset forward",
+             default_value: 20,
+             prepare: -> (n, ctx) { [n, 30].min }
+    resolve -> (obj, args, ctx) do
+      if args[:location]
+        current_text_node = obj.text_nodes.where(
+	        work_id: obj.id,
+					location: args[:location],
+	      ).order(index: :asc).first
+			else
+        current_text_node = obj.text_nodes.where(
+	        work_id: obj.id,
+	      ).order(index: :asc).first
+			end
+
+
+			next_text_node = obj.text_nodes.where(
+        "(
+					index >= :current_text_node_index
+	      and
+					index <= :current_text_node_index + :offset
+        )",
+				current_text_node_index: current_text_node.index,
+				offset: args[:offset],
+			).order(index: :asc).last
+
+			if next_text_node
+				next_text_node.location
+			else
+				[]
+			end
+		end
+	end
+	field :text_location_prev, types[types.Int] do
+    description "Find the next text node before the supplied location at a given offset"
+    argument :location, types[types.Int]
+    argument :offset,
+             types.Int,
+             "Number of nodes to offset before the target location",
+             default_value: 20,
+             prepare: -> (n, ctx) { [n, 30].min }
+    resolve -> (obj, args, ctx) do
+      if args[:location]
+        current_text_node = obj.text_nodes.where(
+	        work_id: obj.id,
+					location: args[:location],
+	      ).order(index: :asc).first
+			else
+        current_text_node = obj.text_nodes.where(
+	        work_id: obj.id,
+	      ).order(index: :asc).first
+			end
+
+
+			prev_text_node = obj.text_nodes.where(
+        "(
+					index >= :current_text_node_index - :offset
+	      and
+					index < :current_text_node_index
+        )",
+				current_text_node_index: current_text_node.index,
+				offset: args[:offset],
+			).order(index: :asc).first
+
+			if prev_text_node
+				prev_text_node.location
+			else
+				[]
+			end
+		end
+	end
 end
