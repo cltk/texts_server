@@ -26,8 +26,8 @@ Types::WorkType = GraphQL::ObjectType.define do
              prepare: -> (n, ctx) { [n, 30].min }
 
     resolve -> (obj, args, ctx) do
-			if args[:location]
-	      obj.text_nodes.where(
+      if args[:location]
+        obj.text_nodes.where(
 	        "(index >= (
 	               select index - :leading_nodes from text_nodes
 	               where work_id = :work_id and location = ARRAY[:location]
@@ -46,11 +46,9 @@ Types::WorkType = GraphQL::ObjectType.define do
 	        trailing_nodes: args[:trailing_nodes],
 	        work_id: obj.id
 	      ).order(index: :asc)
-			else
-	      obj.text_nodes.where(
-					work_id: obj.id
-	      ).order(index: :asc).limit(30)
-			end
+      else
+        obj.text_nodes.order(index: :asc).limit(30)
+      end
     end
   end
 end
