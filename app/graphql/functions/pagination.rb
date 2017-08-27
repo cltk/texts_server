@@ -5,7 +5,7 @@ class Functions::Pagination < GraphQL::Function
 
   argument :limit, types.Int, default_value: 20, prepare: -> (limit, ctx) { [limit, 50].min }
   argument :offset, types.Int, default_value: 0
-  
+
   def initialize(children: :itself, type:)
     @children = children
     @type = type

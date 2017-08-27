@@ -11,7 +11,10 @@ Types::WorkType = GraphQL::ObjectType.define do
   field :structure, types.String
   field :urn, types.String
   field :text_nodes,
-        function: Functions::Pagination.new(children: :text_nodes, type: types[Types::TextNodeType])
+        function: Functions::SortablePagination.new(
+          children: :text_nodes,
+          type: types[Types::TextNodeType]
+        )
   field :text_nodes_by_location, types[Types::TextNodeType] do
     description "Find TextNodes using the location array"
 
