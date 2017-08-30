@@ -1,0 +1,2 @@
+class EntityMapEntry < ApplicationRecord
+end

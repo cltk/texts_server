@@ -5,6 +5,8 @@ class TextNode < ApplicationRecord
 
   validates :key, presence: true, uniqueness: true
 
+  belongs_to :user, optional: true
+
   def ensure_key!
     return unless key.nil?
 
