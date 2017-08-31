@@ -4,6 +4,6 @@ Rails.application.routes.draw do
   end
 
   post "/graphql", to: "graphql#execute"
-  
-  get "/auth/:provider/callback", to: "sessions#create"
+
+  get "/auth/:provider/callback", to: "auth#callback"
 end

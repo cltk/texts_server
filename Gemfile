@@ -24,6 +24,7 @@ gem 'octokit', '~> 4.0'
 gem 'omniauth'
 gem 'omniauth-facebook'
 gem 'omniauth-github'
+gem 'omniauth-google-oauth2'
 gem 'omniauth-twitter'
 
 # Use Capistrano for deployment

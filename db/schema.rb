@@ -78,12 +78,18 @@ ActiveRecord::Schema.define(version: 20170830024010) do
   end
 
   create_table "users", force: :cascade do |t|
-    t.string "email", null: false
+    t.string "email"
+    t.string "username", null: false
     t.string "facebook_access_token"
+    t.string "facebook_uid"
+    t.string "github_access_token"
+    t.string "github_uid"
     t.string "google_access_token"
     t.string "google_refresh_token"
-    t.string "twitter_oauth_token"
-    t.string "twitter_oauth_token_secret"
+    t.string "google_uid"
+    t.string "twitter_access_token"
+    t.string "twitter_secret"
+    t.string "twitter_uid"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
