@@ -3,7 +3,7 @@ class AuthController < ApplicationController
 
   def callback
     user = User.find_or_create_from_auth_hash(auth_hash)
-    render nothing: true, status: 200
+    render json: user, status: 200
   end
 
   protected
