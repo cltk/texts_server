@@ -20,8 +20,12 @@ gem 'dotenv-rails', require: 'dotenv/rails-now'
 gem 'base32', '~> 0.3.2'
 gem 'rack-cors', :require => 'rack/cors'
 gem 'graphql'
-gem "octokit", "~> 4.0"
-gem 'rack-cors', :require => 'rack/cors'
+gem 'octokit', '~> 4.0'
+gem 'omniauth'
+gem 'omniauth-facebook'
+gem 'omniauth-github'
+gem 'omniauth-google-oauth2'
+gem 'omniauth-twitter'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development

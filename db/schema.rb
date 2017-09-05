@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 5) do
+ActiveRecord::Schema.define(version: 20170830024010) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -32,6 +32,17 @@ ActiveRecord::Schema.define(version: 5) do
     t.datetime "updated_at", null: false
     t.bigint "language_id"
     t.index ["language_id"], name: "index_corpora_on_language_id"
+  end
+
+  create_table "entity_map_entries", force: :cascade do |t|
+    t.integer "key", null: false
+    t.json "data"
+    t.string "type", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "work_id"
+    t.index ["key", "work_id"], name: "index_entity_map_entries_on_key_and_work_id", unique: true
+    t.index ["work_id"], name: "index_entity_map_entries_on_work_id"
   end
 
   create_table "languages", force: :cascade do |t|
@@ -57,11 +68,34 @@ ActiveRecord::Schema.define(version: 5) do
     t.bigint "corpus_id"
     t.bigint "language_id"
     t.bigint "work_id"
+    t.bigint "user_id"
     t.index ["author_id"], name: "index_text_nodes_on_author_id"
     t.index ["corpus_id"], name: "index_text_nodes_on_corpus_id"
     t.index ["key", "work_id"], name: "index_text_nodes_on_key_and_work_id", unique: true
     t.index ["language_id"], name: "index_text_nodes_on_language_id"
+    t.index ["user_id"], name: "index_text_nodes_on_user_id"
     t.index ["work_id"], name: "index_text_nodes_on_work_id"
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.string "email"
+    t.string "username"
+    t.string "facebook_access_token"
+    t.string "facebook_uid"
+    t.string "facebook_username"
+    t.string "github_access_token"
+    t.string "github_uid"
+    t.string "github_username"
+    t.string "google_access_token"
+    t.string "google_refresh_token"
+    t.string "google_uid"
+    t.string "google_username"
+    t.string "twitter_access_token"
+    t.string "twitter_secret"
+    t.string "twitter_uid"
+    t.string "twitter_username"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "works", force: :cascade do |t|
@@ -87,6 +121,7 @@ ActiveRecord::Schema.define(version: 5) do
 
   add_foreign_key "authors", "languages"
   add_foreign_key "corpora", "languages"
+  add_foreign_key "entity_map_entries", "works"
   add_foreign_key "text_nodes", "authors"
   add_foreign_key "text_nodes", "corpora"
   add_foreign_key "text_nodes", "languages"
