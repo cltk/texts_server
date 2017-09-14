@@ -87,6 +87,19 @@ Types::QueryType = GraphQL::ObjectType.define do
     resolve -> (obj, args, ctx) { Language.find_by(slug: args[:slug]) }
   end
 
+  field :search_works_by_title do
+    type types[Types::WorkType]
+
+    argument :limit, types.Int, default_value: 20
+    argument :offset, types.Int, default_value: 0
+    argument :title, !types.String
+
+    description "Search works by title"
+    resolve -> (obj, args, ctx) do
+      Work.search_by_title(args[:title]).limit(args[:limit]).offset(args[:offset])
+    end
+  end
+
   field :works do
     type types[Types::WorkType]
 
