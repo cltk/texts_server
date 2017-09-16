@@ -7,5 +7,5 @@ class Work < ApplicationRecord
 
   has_many :text_nodes
 
-  pg_search_scope :search_by_title, against: :title
+  pg_search_scope :search_by_title, against: :english_title
 end
